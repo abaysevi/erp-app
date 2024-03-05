@@ -94,14 +94,13 @@ class _AddProductState extends State<AddProduct> {
         // Assuming CSV structure is Product Name, Price, Tax, Unique Code
         // print(csvData);
         for (List<dynamic> row in csvData) {
-//
           String productName = row[0].toString();
           double productPrice = double.tryParse(row[1].toString()) ?? 0.0;
           double tax = double.tryParse(row[2].toString()) ?? 0.0;
-          String uniqueCode = row[3].toString();
+          String uniqueCode = row[3].toString().trim();
           // print(productName);
-          // print(productPrice);
-          // print(uniqueCode);
+          print(productPrice);
+          print(uniqueCode);
           // print(tax);
           // Call createProduct method without toInt()
           await SQLHelper.createProduct(

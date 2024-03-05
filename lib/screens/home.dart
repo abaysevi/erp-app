@@ -101,6 +101,10 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       // Implement onTap action
                       print('Tapped on product: ${product['product_name']}');
+                      print('Tapped on product: ${product['product_price']}');
+                      print('Tapped on product: ${product['tax']}');
+                      print('Tapped on product: ${product['unique_code']}');
+
                       _addToCart(product);
                     },
                     child: Card(
@@ -122,6 +126,11 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(height: 4.0),
                             Text(
                               'Tax: ${product['tax'] ?? ''}%',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            SizedBox(height: 4.0),
+                            Text(
+                              'Unique code: ${product['unique_code'] ?? ''}',
                               style: TextStyle(color: Colors.white),
                             ),
                             // Add more details as needed
