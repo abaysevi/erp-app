@@ -99,8 +99,6 @@ class _AddProductState extends State<AddProduct> {
           double tax = double.tryParse(row[2].toString()) ?? 0.0;
           String uniqueCode = row[3].toString().trim();
           // print(productName);
-          print(productPrice);
-          print(uniqueCode);
           // print(tax);
           // Call createProduct method without toInt()
           await SQLHelper.createProduct(
@@ -141,7 +139,7 @@ class _AddProductState extends State<AddProduct> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.file_upload),
+            icon: const Icon(Icons.file_upload),
             onPressed: () => _importFromCSV(context),
           ),
         ],

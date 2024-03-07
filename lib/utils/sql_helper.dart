@@ -1,28 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
+import 'dart:convert';
+
 class SQLHelper {
-  // static Future<void> createTables(sql.Database database) async {
-  //   await database.execute("""CREATE TABLE products(
-  //       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  //       product_name TEXT,
-  //       product_price INTEGER,
-  //       unique_code TEXT,
-  //       tax INTEGER,
-  //       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  //     )
-  //     """);
-  //   await database.execute("""CREATE TABLE cart(
-  //       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  //       product_name TEXT,
-  //       product_price INTEGER,
-  //       unique_code TEXT,
-  //       tax REAL,
-  //       quantity INTEGER,
-  //       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  //     )
-  //     """);
-  // }
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE products(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -43,6 +24,15 @@ class SQLHelper {
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
+
+    await database.execute("""CREATE TABLE sales(
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  cart_items TEXT, -- Store the list of cart items as a serialized JSON string
+  total_amount REAL,
+  payment_option TEXT,
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+""");
   }
 
   static Future<sql.Database> db() async {
@@ -112,21 +102,6 @@ class SQLHelper {
     }
   }
 
-  //TABLE FOR THE CART AND ITS QURIES
-
-  // static Future<void> createCartTable(sql.Database database) async {
-  //   await database.execute("""CREATE TABLE cart(
-  //       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  //       product_name TEXT,
-  //       product_price INTEGER,
-  //       unique_code TEXT,
-  //       tax INTEGER,
-  //       quantity INTEGER,
-  //       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  //     )
-  //     """);
-  // }
-
   static Future<int?> addToCart(String productName, double productPrice,
       String uniqueCode, double tax, int quantity) async {
     final db = await SQLHelper.db();
@@ -192,5 +167,31 @@ class SQLHelper {
 
     await db.update('cart', {'quantity': quantity},
         where: "id = ?", whereArgs: [itemId]);
+  }
+
+  static Future<int> createSale(
+    List<Map<String, dynamic>> cartItems,
+    double totalAmount,
+    String paymentOption,
+  ) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      'cart_items': jsonEncode(cartItems),
+      'total_amount': totalAmount,
+      'payment_option': paymentOption,
+    };
+
+    final id = await db.insert(
+      'sales',
+      data,
+      conflictAlgorithm: sql.ConflictAlgorithm.replace,
+    );
+    return id;
+  }
+
+  static Future<List<Map<String, dynamic>>> getSalesData() async {
+    final db = await SQLHelper.db();
+    return db.query('sales', orderBy: "id DESC");
   }
 }

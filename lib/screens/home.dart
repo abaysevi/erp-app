@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 52, 34, 56),
+      backgroundColor: const Color.fromARGB(255, 52, 34, 56),
       appBar: AppBar(
         title: Transform.translate(
           offset: const Offset(0, 5),
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Color.fromARGB(255, 52, 34, 56),
+        backgroundColor: const Color.fromARGB(255, 52, 34, 56),
         centerTitle: true,
       ),
       body: RefreshIndicator(
@@ -62,20 +62,20 @@ class _HomePageState extends State<HomePage> {
           future: SQLHelper.getProducts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(
                   color: Colors.white,
                 ),
               );
             } else if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text(
                   "Error fetching products",
                   style: TextStyle(color: Colors.white),
                 ),
               );
             } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
-              return Center(
+              return const Center(
                 child: Text(
                   "No Products Available",
                   style: TextStyle(
@@ -100,15 +100,11 @@ class _HomePageState extends State<HomePage> {
                   return GestureDetector(
                     onTap: () {
                       // Implement onTap action
-                      print('Tapped on product: ${product['product_name']}');
-                      print('Tapped on product: ${product['product_price']}');
-                      print('Tapped on product: ${product['tax']}');
-                      print('Tapped on product: ${product['unique_code']}');
 
                       _addToCart(product);
                     },
                     child: Card(
-                      color: Color.fromARGB(255, 62, 44, 66),
+                      color: const Color.fromARGB(255, 62, 44, 66),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -116,22 +112,22 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text(
                               product['product_name'] ?? '',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            SizedBox(height: 4.0),
+                            const SizedBox(height: 4.0),
                             Text(
                               'Price: \$${product['product_price'] ?? ''}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            SizedBox(height: 4.0),
+                            const SizedBox(height: 4.0),
                             Text(
                               'Tax: ${product['tax'] ?? ''}%',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            SizedBox(height: 4.0),
+                            const SizedBox(height: 4.0),
                             Text(
                               'Unique code: ${product['unique_code'] ?? ''}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             // Add more details as needed
                           ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import "./home.dart";
 import "./login.dart";
 
 void main() {
@@ -7,7 +6,7 @@ void main() {
 }
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
